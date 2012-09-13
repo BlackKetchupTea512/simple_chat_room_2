@@ -30,9 +30,9 @@
 
     <script>
       $(function(){
-        var $name = $("#input-name")
-          , $message = $("#input-message")
-          , $chat_log = $("#chat-log");
+        var $name = $("#input-name");
+        var $message = $("#input-message");
+        var $chat_log = $("#chat-log");
 
         var socket = io.connect('http://localhost');
         socket.on("send message", function(name, message){
@@ -40,8 +40,8 @@
         });
 
         $("#input-submit").click(function(){
-          var name = $name.val()
-            , message = $message.val();
+          var name = $name.val();
+          var message = $message.val();
           $chat_log.append("<tr><td>"+ name +"</td><td>"+ message +"</td></tr>");
           socket.emit("send message", name, message);
 
