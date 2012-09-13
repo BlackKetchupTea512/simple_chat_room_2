@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat Room</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1>Chat Room</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>発言者</th>
+          <th>メッセージ</th>
+        </tr>
+      </thead>
+      <tbody id="chat-log">
+      </tbody>
+    </table>
+    <form action="">
+      <label for="">名前:</label>
+      <input type="text" id="input-name">
+      <br>
+      <label for="">発言:</label>
+      <input size=100 type="text" id="input-message">
+      <br>
+      <input type="submit" id="input-submit">
+    </form>
+
+    <script>
+      $(function(){
+        var $name = $("#input-name")
+          , $message = $("#input-message")
+          , $chat_log = $("#chat-log");
+
+        var socket = io.connect('http://localhost');
+        socket.on("send message", function(name, message){
+          $chat_log.append("<tr><td>"+ name +"</td><td>"+ message +"</td></tr>");
+        });
+
+        $("#input-submit").click(function(){
+          var name = $name.val()
+            , message = $message.val();
+          $chat_log.append("<tr><td>"+ name +"</td><td>"+ message +"</td></tr>");
+          socket.emit("send message", name, message);
+
+          $message.val("");
+          return false;
+        })
+      });
+    </script>
+  </body>
+</html>
